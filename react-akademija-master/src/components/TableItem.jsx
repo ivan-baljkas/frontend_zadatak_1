@@ -9,7 +9,7 @@ export const TableItem = (props) =>{
                     <th>{props.basic_information.title}</th>
                     {props.basic_information.year?<th>{props.basic_information.year}</th>:
                    <th>N/A</th> } 
-                    <th>{props.basic_information.genres}</th>
+                    <th>{props.basic_information.genres.join(", ")}</th>
                     <th>{props.basic_information.styles.join(", ")}</th> 
                 </tr>
     );
