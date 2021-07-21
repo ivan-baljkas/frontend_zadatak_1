@@ -5,7 +5,7 @@ export const TableItem = (props) =>{
     return(
                 <tr>
                     <th>{props.id}</th>
-                    <th>{props.basic_information.artists.map((name)=> name).join(", ")}</th>
+                    <th>{props.basic_information.artists.map(({name})=> name).join(", ")}</th>
                     <th>{props.basic_information.title}</th>
                     {props.basic_information.year?<th>{props.basic_information.year}</th>:
                    <th>N/A</th> } 
