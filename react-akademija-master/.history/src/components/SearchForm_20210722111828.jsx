@@ -4,14 +4,14 @@ export const SearchForm = (props) =>{
 
     return(
         <div>
-            <form  onClick={props.handleSearch}>
+            <form>
             <div>
                 
                 <label htmlFor="query">Query </label>
-                <input type="text" id="query" name="query" onChange={props.handleQueryChange}/>
+                <input type="text" id="query"/>
             </div>
             <div>
-                <button type="submit">Search</button>
+                <button type="button" onClick={props.handleSearch()}>Search</button>
                 <p class="result">{props.children}</p>
             </div>   
 

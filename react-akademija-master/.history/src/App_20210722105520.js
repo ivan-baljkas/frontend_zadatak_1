@@ -5,17 +5,19 @@ import { TableItem } from "./components/TableItem";
 import { Pagination } from "./components/Pagination";
 //import data from "./data.json";
 
+const apiURL ='https://api.discogs.com/database/search?q=${query}&key=OxnCHJEetGbikaamOyaK&secret=wQCIuWuanmRVVeWqNVFWMfSJldHbqnAi'
 
 const App = () => {
 
   const [state, setState]= useState({
       results:[],
-      currentPage:1,
-      searchQuery:'',
-      pages:6
+      currentPage:1
   });
 
-  const [queryResult, setQueryResult]= useState('No results');
+  const [queryResult, setQueryResult]= useState({
+    query:'',
+    queryResult:''
+});
 
 
   /* Dohvaćanje kolekcije */
@@ -25,18 +27,16 @@ useEffect(() => {
     .then((data) => data.json())
     .then((data) => {
       /* Dopuniti sa state update funkcijom */
-      const items = data.releases
-      setState({...state, results:items})
+      setState({...state, results:data})
     })
     .catch((error)=>{
         console.log('Error: ',error);
     });
-}, [state.currentPage]);
+}, []);
 
-const handleSearch = (event) => {
-  event.preventDefault();
+const handleSearch = () => {
   fetch(
-    `https://api.discogs.com/database/search?q=${state.searchQuery}&key=OxnCHJEetGbikaamOyaK&secret=wQCIuWuanmRVVeWqNVFWMfSJldHbqnAi`
+    `https://api.discogs.com/database/search?q=${queryResult.query}&key=OxnCHJEetGbikaamOyaK&secret=wQCIuWuanmRVVeWqNVFWMfSJldHbqnAi`
   )
     .then((data) => data.json())
     .then((data) => {
@@ -46,45 +46,20 @@ const handleSearch = (event) => {
     });
 };
 
-const handleQueryChange = (event) => {
-  const value = event.currentTarget.value;
-  setState({ ...state, searchQuery: value });
-  };
-
-
-const handlePrevious = (event) => {
-  event.preventDefault();
-  const newPage = state.currentPage - 1;
-  
-  setState({...state, currentPage:newPage})
-
-  
-};
-
-const handleNext = (event) => {
-  event.preventDefault();
-  const newPage = state.currentPage + 1;
-  
-  setState({...state, currentPage:newPage})
-};
-
-
-  
-
   return (
     <div>
       <header>
         Collection
       </header>
-      <SearchForm state={state}  handleSearch={handleSearch} handleQueryChange={handleQueryChange}>
-          {queryResult}
+      <SearchForm>
+          No results
         </SearchForm>
         <CollectionTable>
-        {state.results.map(release=>(
+        {data.releases.map(release=>(
           <TableItem id={release.id} {...release}/>
         ))}
         </CollectionTable>
-        <Pagination currentPage={state.currentPage} pages={state.pages} handleNext={handleNext} handlePrevious={handlePrevious}/>
+        <Pagination currentPage={1} pages={2} />
     </div>
   );
 };

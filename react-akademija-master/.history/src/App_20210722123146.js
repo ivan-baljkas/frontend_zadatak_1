@@ -34,7 +34,8 @@ useEffect(() => {
 }, [state.currentPage]);
 
 const handleSearch = (event) => {
-  event.preventDefault();
+  //event.preventDefault();
+  
   fetch(
     `https://api.discogs.com/database/search?q=${state.searchQuery}&key=OxnCHJEetGbikaamOyaK&secret=wQCIuWuanmRVVeWqNVFWMfSJldHbqnAi`
   )
@@ -45,11 +46,6 @@ const handleSearch = (event) => {
       );
     });
 };
-
-const handleQueryChange = (event) => {
-  const value = event.currentTarget.value;
-  setState({ ...state, searchQuery: value });
-  };
 
 
 const handlePrevious = (event) => {
@@ -76,7 +72,7 @@ const handleNext = (event) => {
       <header>
         Collection
       </header>
-      <SearchForm state={state}  handleSearch={handleSearch} handleQueryChange={handleQueryChange}>
+      <SearchForm state={state}  handleSearch={handleSearch} >
           {queryResult}
         </SearchForm>
         <CollectionTable>

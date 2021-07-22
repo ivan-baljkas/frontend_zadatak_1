@@ -11,16 +11,15 @@ const App = () => {
   const [state, setState]= useState({
       results:[],
       currentPage:1,
-      searchQuery:'',
-      pages:6
+      query:''
   });
 
-  const [queryResult, setQueryResult]= useState('No results');
+  const [queryResult, setQueryResult]= useState('');
 
 
   /* Dohvaćanje kolekcije */
 useEffect(() => {
-  fetch(`https://api.discogs.com/users/adrianmusiccollector/collection/folders/0/releases?page=${state.currentPage}`)
+  fetch(`https://api.discogs.com/users/adrianmusiccollector/collection/folders/0/releases?page=${1}`)
     /* Dohvaćanje API URL-a sa prosljeđenom paginacijom */
     .then((data) => data.json())
     .then((data) => {
@@ -31,12 +30,13 @@ useEffect(() => {
     .catch((error)=>{
         console.log('Error: ',error);
     });
-}, [state.currentPage]);
 
-const handleSearch = (event) => {
-  event.preventDefault();
+    console.log("HELOOOOO")
+}, []);
+
+const handleSearch = () => {
   fetch(
-    `https://api.discogs.com/database/search?q=${state.searchQuery}&key=OxnCHJEetGbikaamOyaK&secret=wQCIuWuanmRVVeWqNVFWMfSJldHbqnAi`
+    `https://api.discogs.com/database/search?q=${state.query}&key=OxnCHJEetGbikaamOyaK&secret=wQCIuWuanmRVVeWqNVFWMfSJldHbqnAi`
   )
     .then((data) => data.json())
     .then((data) => {
@@ -46,37 +46,12 @@ const handleSearch = (event) => {
     });
 };
 
-const handleQueryChange = (event) => {
-  const value = event.currentTarget.value;
-  setState({ ...state, searchQuery: value });
-  };
-
-
-const handlePrevious = (event) => {
-  event.preventDefault();
-  const newPage = state.currentPage - 1;
-  
-  setState({...state, currentPage:newPage})
-
-  
-};
-
-const handleNext = (event) => {
-  event.preventDefault();
-  const newPage = state.currentPage + 1;
-  
-  setState({...state, currentPage:newPage})
-};
-
-
-  
-
   return (
     <div>
       <header>
         Collection
       </header>
-      <SearchForm state={state}  handleSearch={handleSearch} handleQueryChange={handleQueryChange}>
+      <SearchForm>
           {queryResult}
         </SearchForm>
         <CollectionTable>
@@ -84,7 +59,7 @@ const handleNext = (event) => {
           <TableItem id={release.id} {...release}/>
         ))}
         </CollectionTable>
-        <Pagination currentPage={state.currentPage} pages={state.pages} handleNext={handleNext} handlePrevious={handlePrevious}/>
+        <Pagination currentPage={1} pages={2} />
     </div>
   );
 };

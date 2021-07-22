@@ -10,9 +10,8 @@ const App = () => {
 
   const [state, setState]= useState({
       results:[],
-      currentPage:1,
-      searchQuery:'',
-      pages:6
+      currentPage:5,
+      searchQuery:''
   });
 
   const [queryResult, setQueryResult]= useState('No results');
@@ -31,10 +30,10 @@ useEffect(() => {
     .catch((error)=>{
         console.log('Error: ',error);
     });
-}, [state.currentPage]);
+}, []);
 
 const handleSearch = (event) => {
-  event.preventDefault();
+  
   fetch(
     `https://api.discogs.com/database/search?q=${state.searchQuery}&key=OxnCHJEetGbikaamOyaK&secret=wQCIuWuanmRVVeWqNVFWMfSJldHbqnAi`
   )
@@ -46,29 +45,13 @@ const handleSearch = (event) => {
     });
 };
 
-const handleQueryChange = (event) => {
-  const value = event.currentTarget.value;
-  setState({ ...state, searchQuery: value });
+const handleInputChange = (event) => {
+
+  const name = event.currentTarget.name;
+  const value = event.currentTarget.value; 
+  setState({ ...formValues, [name]: value });
+  
   };
-
-
-const handlePrevious = (event) => {
-  event.preventDefault();
-  const newPage = state.currentPage - 1;
-  
-  setState({...state, currentPage:newPage})
-
-  
-};
-
-const handleNext = (event) => {
-  event.preventDefault();
-  const newPage = state.currentPage + 1;
-  
-  setState({...state, currentPage:newPage})
-};
-
-
   
 
   return (
@@ -76,7 +59,7 @@ const handleNext = (event) => {
       <header>
         Collection
       </header>
-      <SearchForm state={state}  handleSearch={handleSearch} handleQueryChange={handleQueryChange}>
+      <SearchForm state={state} queryState={[queryResult, setQueryResult]} handleSearch={handleSearch} >
           {queryResult}
         </SearchForm>
         <CollectionTable>
@@ -84,7 +67,7 @@ const handleNext = (event) => {
           <TableItem id={release.id} {...release}/>
         ))}
         </CollectionTable>
-        <Pagination currentPage={state.currentPage} pages={state.pages} handleNext={handleNext} handlePrevious={handlePrevious}/>
+        <Pagination currentPage={1} pages={2} />
     </div>
   );
 };

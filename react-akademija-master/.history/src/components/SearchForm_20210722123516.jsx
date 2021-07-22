@@ -8,7 +8,7 @@ export const SearchForm = (props) =>{
             <div>
                 
                 <label htmlFor="query">Query </label>
-                <input type="text" id="query" name="query" onChange={props.handleQueryChange}/>
+                <input type="text" id="query" value={props.state.searchQuery} onChange={props.handleQueryChange}/>
             </div>
             <div>
                 <button type="submit">Search</button>
